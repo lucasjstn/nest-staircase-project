@@ -38,10 +38,14 @@ export class UsersController {
     // console.log(token);
     if (token) {
       return response.status(HttpStatus.OK).json({
-        // token,
+        status: 'success',
+        message: 'logged in',
       });
     }
 
-    return response.status(HttpStatus.UNAUTHORIZED);
+    return response.status(HttpStatus.UNAUTHORIZED).json({
+      status: 'failed',
+      message: 'The username or password you entered is incorrect',
+    });
   }
 }

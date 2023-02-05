@@ -31,26 +31,41 @@ export class UsersService {
     const findUser = await this.userModel
       .findOne({ username: user.username })
       .exec();
+    // console.log(findUser);
+    // console.log(typeof findUser);
 
-    console.log(findUser);
-    if (findUser) {
-      const { password } = findUser;
-      // console.log(await bcrypt.compare(user.password, password));
-      if (bcrypt.compareSync(user.password, password)) {
-        // console.log('logado');
-        return {
-          token: 'token',
-        };
-      }
-
-      return response.status(HttpStatus.UNAUTHORIZED).json({
-        message: 'user or password is wrong',
-      });
+    const { password } = findUser;
+    // console.log(password);
+    // console.log(user.password);
+    if (!bcrypt.compareSync(user.password, password)) {
+      return null;
+    } else {
+      return user;
     }
-    console.log('nao logado');
-    return response.status(HttpStatus.UNAUTHORIZED).json({
-      message: 'user or password is wrong',
-    });
+
+    // const findUser = await this.userModel
+    //   .findOne({ username: user.username })
+    //   .exec();
+
+    // console.log(findUser);
+    // if (findUser) {
+    //   const { password } = findUser;
+    //   // console.log(await bcrypt.compare(user.password, password));
+    //   if (bcrypt.compareSync(user.password, password)) {
+    //     // console.log('logado');
+    //     return {
+    //       token: 'token',
+    //     };
+    //   }
+
+    //   return response.status(HttpStatus.UNAUTHORIZED).json({
+    //     message: 'user or password is wrong',
+    //   });
+    // }
+    // console.log('nao logado');
+    // return response.status(HttpStatus.UNAUTHORIZED).json({
+    //   message: 'user or password is wrong',
+    // });
   }
 
   async findAll(): Promise<User[]> {
